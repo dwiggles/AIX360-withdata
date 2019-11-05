@@ -28,7 +28,13 @@ def default_preprocessing(df):
     # df = df[df.ExternalRiskEstimate != -9]
     # add columns for -7 and -8 in the dataset
     for col in x_cols:
-        df[col][df[col].isin([-7, -8, -9])] = 0
+        #Chained indexing was here:
+        #df[col][df[col].isin([-7, -8, -9])] = 0
+        
+        #Elimination of Chained indexing follows:
+        df.loc[:, ( col, df[col].isin([-7, -8, -9]) )]
+        # Modelled after: <URL in commit desc>
+        
     # Get the column names for the covariates and the dependent variable
     df = df[(df[x_cols].T != 0).any()]
     x = df.values[:, 0:-1]
